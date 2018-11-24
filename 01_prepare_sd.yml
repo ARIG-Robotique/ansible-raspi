@@ -21,7 +21,7 @@
   tasks:
     - name: Inclusion des variables
       include_vars:
-        file: vars/secrets/nerell.yml
+        file: vars/wifi.vault.yml
 
     - name: Création répertoire de download
       file:
