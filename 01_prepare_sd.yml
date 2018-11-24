@@ -1,0 +1,106 @@
+---
+
+- hosts: localhost
+
+  vars:
+    raspberry_pi_download:
+      url: http://director.downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-11-15/2018-11-13-raspbian-stretch-lite.zip
+      sha256: 47ef1b2501d0e5002675a50b6868074e693f78829822eef64f3878487953234d
+
+  vars_prompt:
+    - name: sd_card_device
+      prompt: SD Card device
+      default: /dev/mmcblk0
+      private: no
+
+    - name: restore_img
+      prompt: Restauration sur la SD Card
+      default: True
+      private: no
+
+  tasks:
+    - name: Inclusion des variables
+      include_vars:
+        file: vars/secrets/nerell.yml
+
+    - name: Création répertoire de download
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - .tmp
+        - .mnt
+        - .mnt/boot
+        - .mnt/root
+
+    - name: Contrôle téléchargement nécéssaire
+      stat:
+        path: ".tmp/{{ raspberry_pi_download.url | basename }}"
+        checksum_algorithm: sha256
+      register: raspberry_pi_info
+
+    - name: Download image d'installation Raspberry PI
+      get_url:
+        url: "{{ raspberry_pi_download.url }}"
+        dest: .tmp/
+        checksum: "sha256:{{ raspberry_pi_download.sha256 }}"
+      when: not raspberry_pi_info.stat.exists or raspberry_pi_info.stat.checksum != raspberry_pi_download.sha256
+
+    - name: Contrôle unarchive déjà effectué
+      stat:
+        path: ".tmp/{{ raspberry_pi_download.url | basename | replace('.zip','.img') }}"
+      register: unarchive_info
+
+    - name: Unzip image Rapsberry PI
+      unarchive:
+        src: ".tmp/{{ raspberry_pi_download.url | basename }}"
+        dest: .tmp/
+      when: not unarchive_info.stat.exists
+
+    - name: "Restore Image sur la SD Card {{ sd_card_device }}"
+      command: "dd if=.tmp/{{ raspberry_pi_download.url | basename | replace('.zip','.img') }} of={{ sd_card_device }}"
+      become: yes
+      when: restore_img
+
+    - name: Montage de la partition SD Card
+      mount:
+        boot: no
+        src: "{{ sd_card_device }}{{ item.partition }}"
+        path: "{{ item.path }}"
+        fstype: "{{ item.fstype }}"
+        state: mounted
+      with_items:
+        - partition: p1
+          path: .mnt/boot
+          fstype: vfat
+        - partition: p2
+          path: .mnt/root
+          fstype: ext4
+      become: yes
+
+    - name: Templates de configuration
+      template:
+        src: "templates/{{ item }}"
+        dest: ".mnt/{{ item }}"
+      with_items:
+        - boot/wpa_supplicant.conf
+        - boot/ssh
+        - root/etc/rc.local
+      become: yes
+
+    - name: Affichage de l'IP au démarrage
+      file:
+        path: .mnt/root/etc/rc.local
+        mode: 0755
+        owner: root
+        group: root
+      become: yes
+
+    - name: Demontage de la partition SD Card
+      mount:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - .mnt/boot
+        - .mnt/root
+      become: yes
