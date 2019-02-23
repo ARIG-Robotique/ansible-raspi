@@ -10,6 +10,7 @@ Installation de nos Raspberry PI.
   * [Chiffrer l'ensemble des fichiers](#chiffrer-lensemble-des-fichiers)
   * [Déchiffrer l'ensemble des fichiers](#dechiffrer-lensemble-des-fichiers)
 - [Preparation de la SD Card](#preparation-de-la-sd-card)
+- [TODO](#todo)
 
 <!-- tocstop -->
 
@@ -50,3 +51,12 @@ make sd_card
 ```
 
 > NB : L'écriture sur le device est réaliser en superuser.
+
+## TODO
+
+> Play init ajout authorized_keys root
+
+> Configuration de l'orientation du LCD
+> Role standard (vim, htop, etc...)
+> Role Java + JavaFX
+> Role GUI light
