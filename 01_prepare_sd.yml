@@ -10,12 +10,20 @@
   vars_prompt:
     - name: sd_card_device
       prompt: SD Card device
-      default: /dev/mmcblk0
+      private: no
+
+    - name: sd_card_partition_prefix
+      prompt: SD Card prefixe de partition
       private: no
 
     - name: restore_img
       prompt: Restauration sur la SD Card
       default: True
+      private: no
+
+    - name: force_hdmi
+      prompt: Configuration pour force la sortie HDMI
+      default: False
       private: no
 
   tasks:
@@ -70,10 +78,10 @@
         fstype: "{{ item.fstype }}"
         state: mounted
       with_items:
-        - partition: p1
+        - partition: "{{ sd_card_partition_prefix }}1"
           path: .mnt/boot
           fstype: vfat
-        - partition: p2
+        - partition: "{{ sd_card_partition_prefix }}2"
           path: .mnt/root
           fstype: ext4
       become: yes
@@ -86,7 +94,15 @@
         - boot/wpa_supplicant.conf
         - boot/ssh
         - root/etc/rc.local
+        - root/etc/default/keyboard
       become: yes
+
+    - name: Configuration HDMI
+      replace:
+        path: .mnt/boot/config.txt
+        regexp: '^#(hdmi_force_hotplug|hdmi_drive)'
+        replace: '\1'
+      when: force_hdmi
 
     - name: Affichage de l'IP au démarrage
       file:
