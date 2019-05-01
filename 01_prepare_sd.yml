@@ -4,8 +4,8 @@
 
   vars:
     raspberry_pi_download:
-      url: http://director.downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-11-15/2018-11-13-raspbian-stretch-lite.zip
-      sha256: 47ef1b2501d0e5002675a50b6868074e693f78829822eef64f3878487953234d
+      url: http://director.downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
+      sha256: 03ec326d45c6eb6cef848cf9a1d6c7315a9410b49a276a6b28e67a40b11fdfcf
 
   vars_prompt:
     - name: sd_card_device
