@@ -104,6 +104,18 @@
         replace: '\1'
       when: force_hdmi
 
+    - name: Configuration SSH
+      lineinfile:
+        path: .mnt/root/etc/ssh/ssh_config
+        line: "IPQoS cs0 cs0"
+        state: present
+
+    - name: Configuration BT
+      lineinfile:
+        path: .mnt/boot/config.txt
+        line: "dtoverlay=pi3-disable-bt"
+        state: present
+
     - name: Affichage de l'IP au démarrage
       file:
         path: .mnt/root/etc/rc.local
