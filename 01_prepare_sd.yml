@@ -4,16 +4,18 @@
 
   vars:
     raspberry_pi_download:
-      url: http://director.downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
-      sha256: 03ec326d45c6eb6cef848cf9a1d6c7315a9410b49a276a6b28e67a40b11fdfcf
+      url: http://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2020-05-28/2020-05-27-raspios-buster-lite-armhf.zip
+      sha256: f5786604be4b41e292c5b3c711e2efa64b25a5b51869ea8313d58da0b46afc64
 
   vars_prompt:
     - name: sd_card_device
       prompt: SD Card device
+      default: /dev/mmcblk0
       private: no
 
     - name: sd_card_partition_prefix
       prompt: SD Card prefixe de partition
+      default: p
       private: no
 
     - name: restore_img
@@ -23,6 +25,11 @@
 
     - name: force_hdmi
       prompt: Configuration pour force la sortie HDMI
+      default: False
+      private: no
+
+    - name: disable_bluetooth
+      prompt: Désactivation du bluetooth
       default: False
       private: no
 
@@ -67,8 +74,8 @@
 
     - name: "Restore Image sur la SD Card {{ sd_card_device }}"
       command: "dd if=.tmp/{{ raspberry_pi_download.url | basename | replace('.zip','.img') }} of={{ sd_card_device }}"
+      when: restore_img | bool
       become: yes
-      when: restore_img
 
     - name: Montage de la partition SD Card
       mount:
@@ -102,19 +109,23 @@
         path: .mnt/boot/config.txt
         regexp: '^#(hdmi_force_hotplug|hdmi_drive)'
         replace: '\1'
-      when: force_hdmi
+      when: force_hdmi | bool
+      become: yes
 
     - name: Configuration SSH
       lineinfile:
         path: .mnt/root/etc/ssh/ssh_config
         line: "IPQoS cs0 cs0"
         state: present
+      become: yes
 
     - name: Configuration BT
       lineinfile:
         path: .mnt/boot/config.txt
         line: "dtoverlay=pi3-disable-bt"
         state: present
+      when: disable_bluetooth | bool
+      become: yes
 
     - name: Affichage de l'IP au démarrage
       file:
