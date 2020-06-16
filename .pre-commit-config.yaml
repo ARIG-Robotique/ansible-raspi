@@ -2,7 +2,7 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.0.0
+    rev: v3.1.0
     hooks:
       - id: check-byte-order-marker
         stages: ['commit']
@@ -22,23 +22,25 @@ repos:
         stages: ['commit']
       - id: end-of-file-fixer
         stages: ['commit']
-      - id: flake8
-        stages: ['commit']
       - id: trailing-whitespace
         stages: ['commit']
 
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.8.3
+    hooks:
+      - id: flake8
+        stages: ['commit']
+
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.7.3
+    rev: v1.31.0
     hooks:
       - id: terraform_fmt
-        stages: ['commit']
-      - id: terraform_validate_no_variables
         stages: ['commit']
       - id: terraform_docs
         stages: ['commit']
 
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.13.0
+    rev: v1.23.0
     hooks:
       - id: yamllint
         stages: ['commit']
@@ -50,13 +52,13 @@ repos:
         stages: ['commit']
 
   - repo: https://git.iamthefij.com/iamthefij/docker-pre-commit.git
-    rev: v1.0.0
+    rev: v2.0.0
     hooks:
       - id: docker-compose-check
         stages: ['commit']
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks-nodejs.git
-    rev: v1.1.0
+    rev: v1.1.1
     hooks:
       - id: dockerfile_lint
         stages: ['commit']
@@ -64,7 +66,7 @@ repos:
         stages: ['commit']
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks-go
-    rev: v1.0.0
+    rev: v1.0.1
     hooks:
       - id: checkmake
         stages: ['commit']
