@@ -4,8 +4,8 @@
 
   vars:
     raspberry_pi_download:
-      url: http://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2020-05-28/2020-05-27-raspios-buster-lite-armhf.zip
-      sha256: f5786604be4b41e292c5b3c711e2efa64b25a5b51869ea8313d58da0b46afc64
+      url: https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2020-08-24/2020-08-20-raspios-buster-armhf-lite.zip
+      sha256: 4522df4a29f9aac4b0166fbfee9f599dab55a997c855702bfe35329c13334668
 
   vars_prompt:
     - name: sd_card_device
@@ -31,6 +31,11 @@
     - name: disable_bluetooth
       prompt: Désactivation du bluetooth
       default: False
+      private: no
+
+    - name: hostname
+      prompt: Hostname
+      default: raspberrypi
       private: no
 
   tasks:
@@ -102,6 +107,14 @@
         - boot/ssh
         - root/etc/rc.local
         - root/etc/default/keyboard
+        - root/etc/hostname
+      become: yes
+
+    - name: Configuration hostname
+      replace:
+        path: .mnt/root/etc/hosts
+        regexp: 'raspberrypi'
+        replace: '{{hostname}}'
       become: yes
 
     - name: Configuration HDMI
