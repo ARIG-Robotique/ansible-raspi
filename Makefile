@@ -19,10 +19,10 @@ sd_card:
 
 all: robots
 
-robots: nerell elfa
+robots: nerell odin
 
 nerell:
 	ansible-playbook 02_nerell.yml
 
-elfa:
-	ansible-playbook 03_elfa.yml
+odin:
+	ansible-playbook 03_odin.yml

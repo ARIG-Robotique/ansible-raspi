@@ -4,8 +4,8 @@
 
   vars:
     raspberry_pi_download:
-      url: https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2020-12-04/2020-12-02-raspios-buster-armhf-lite.zip
-      sha256: 186525f542056e953cb309c74a6398d8fef9bc808c6e83d82f358692a41e3964
+      url: https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2021-03-25/2021-03-04-raspios-buster-armhf.zip
+      sha256: d3de1a33d2d4f4990345b6369960b04c70b577519e6f25f4d7ec601e305e932a
 
   vars_prompt:
     - name: sd_card_device
