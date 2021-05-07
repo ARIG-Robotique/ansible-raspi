@@ -1,0 +1,130 @@
+---
+
+- name: Changement du mot de passe de l'utilisateur pi
+  user:
+    name: pi
+    update_password: always
+    password: "{{ lookup('password', 'credentials/' + inventory_hostname + ' encrypt=sha512_crypt') }}"
+
+- name: Ajout des repositories APT complémentaire
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  loop: "{{ arig_common_apt_repositories }}"
+  register: arig_common_repository_task
+
+- name: Update si les repositories on changés
+  block:
+    - name: Update cache
+      apt:
+        update_cache: true
+
+    - name: Dist upgrade
+      apt:
+        upgrade: dist
+
+    - name: Reboot
+      reboot:
+        msg: "Reboot initiated by Ansible"
+        connect_timeout: 5
+        reboot_timeout: 600
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: whoami
+  when: arig_common_repository_task.changed
+
+- name: Installation des packages communs
+  apt:
+    name: "{{ arig_common_packages }}"
+
+- name: Merge configuration
+  set_fact:
+    arig_common_raspberry_pi_config_merged: "{{ arig_common_raspberry_pi_config_default | combine(arig_common_raspberry_pi_config) }}"
+
+- name: Get Raspberry Pi type
+  command: raspi-config nonint get_pi_type
+  register: arig_common_raspberrypi_type
+  changed_when: false
+
+- name: Get Raspberry Pi screen blanking
+  command: raspi-config nonint get_blanking
+  register: arig_common_raspberrypi_screen_blanking
+  changed_when: false
+
+- name: Get Raspberry Pi camera
+  command: raspi-config nonint get_camera
+  register: arig_common_raspberrypi_camera
+  changed_when: false
+
+- name: Get Raspberry Pi I2C
+  command: raspi-config nonint get_i2c
+  register: arig_common_raspberrypi_i2c
+  changed_when: false
+
+- name: Get Raspberry Pi VNC
+  command: raspi-config nonint get_vnc
+  register: arig_common_raspberrypi_vnc
+  changed_when: false
+
+- name: Show RaspberryPI info
+  debug:
+    msg:
+      - "Type            : {{ arig_common_raspberrypi_type.stdout }} (1->PiOne, 2->PiTwo, 0->Others)"
+      - "Screen Blanking : {{ arig_common_raspberrypi_screen_blanking.stdout }} (0->Enable, 1->Disabled)"
+      - "Camera          : {{ arig_common_raspberrypi_camera.stdout }} (0->Enable, 1->Disabled)"
+      - "I2C             : {{ arig_common_raspberrypi_i2c.stdout }} (0->Enable, 1->Disabled)"
+      - "VNC             : {{ arig_common_raspberrypi_vnc.stdout }} (0->Enable, 1->Disabled)"
+
+- name: Show RaspberryPI config requise
+  debug:
+    var: arig_common_raspberry_pi_config_merged
+
+- name: Enable Screen Blanking
+  command: raspi-config nonint do_blanking 0
+  when: arig_common_raspberry_pi_config_merged.screen_blanking and arig_common_raspberrypi_screen_blanking.stdout != '0'
+
+- name: Disable Screen Blanking
+  command: raspi-config nonint do_blanking 1
+  when: not arig_common_raspberry_pi_config_merged.screen_blanking and arig_common_raspberrypi_screen_blanking.stdout != '1'
+
+- name: Enable Camera
+  command: raspi-config nonint do_camera 0
+  when: arig_common_raspberry_pi_config_merged.camera and arig_common_raspberrypi_camera.stdout != '0'
+
+- name: Disable Camera
+  command: raspi-config nonint do_camera 1
+  when: not arig_common_raspberry_pi_config_merged.camera and arig_common_raspberrypi_camera.stdout != '1'
+
+- name: Enable I2C
+  command: raspi-config nonint do_i2c 0
+  when: arig_common_raspberry_pi_config_merged.i2c and arig_common_raspberrypi_i2c.stdout != '0'
+
+- name: Disable I2C
+  command: raspi-config nonint do_i2c 1
+  when: not arig_common_raspberry_pi_config_merged.i2c and arig_common_raspberrypi_i2c.stdout != '1'
+
+- name: Enable VNC
+  command: raspi-config nonint do_vnc 0
+  when: arig_common_raspberry_pi_config_merged.vnc and arig_common_raspberrypi_vnc.stdout != '0'
+
+- name: Disable VNC
+  command: raspi-config nonint do_vnc 1
+  when: not arig_common_raspberry_pi_config_merged.vnc and arig_common_raspberrypi_vnc.stdout != '1'
+
+- name: Configuration pour QT
+  block:
+    - name: Build de packages pour QT
+      apt:
+        name: "{{ arig_common_qt_build }}"
+        state: build-dep
+
+    - name: Ajout des packages pour QT
+      apt:
+        name: "{{ arig_common_qt_packages }}"
+
+    - name: Création du répertoire de destination pour QT (cross compile)
+      file:
+        path: /usr/local/qt5.15
+        state: directory
+        mode: 0755
+  when: arig_common_enable_qt

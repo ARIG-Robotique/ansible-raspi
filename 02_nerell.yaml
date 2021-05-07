@@ -1,0 +1,9 @@
+---
+- name: Déploiement de Nerell (robot principal)
+  hosts: nerell
+  become: true
+
+  roles:
+    - arig_common
+
+  tasks:

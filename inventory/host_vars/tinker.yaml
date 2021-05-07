@@ -1,0 +1,9 @@
+---
+
+robot_name: Nerell
+
+arig_common_raspberry_pi_config:
+  # screen_blanking: true
+  # camera: false
+  i2c: true
+  vnc: true

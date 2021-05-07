@@ -65,6 +65,7 @@ fabric.properties
 .idea/httpRequests
 
 # Custom
+credentials/
 .idea/sonarlint/
 .vault_password
 .tmp/

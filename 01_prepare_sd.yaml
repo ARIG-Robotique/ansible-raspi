@@ -11,37 +11,36 @@
     - name: sd_card_device
       prompt: SD Card device
       default: /dev/mmcblk0
-      private: no
+      private: false
 
     - name: sd_card_partition_prefix
       prompt: SD Card prefixe de partition
       default: p
-      private: no
+      private: false
 
     - name: restore_img
       prompt: Restauration sur la SD Card
-      default: True
-      private: no
+      default: true
+      private: false
 
     - name: force_hdmi
       prompt: Configuration pour force la sortie HDMI
-      default: False
-      private: no
+      default: false
+      private: false
 
     - name: disable_bluetooth
       prompt: Désactivation du bluetooth
-      default: False
-      private: no
+      default: false
+      private: false
 
     - name: hostname
       prompt: Hostname
-      default: raspberrypi
-      private: no
+      private: false
 
   tasks:
     - name: Inclusion des variables
       include_vars:
-        file: vars/wifi.vault.yml
+        file: vars/wifi.vault.yaml
 
     - name: Création répertoire de download
       file:
@@ -80,11 +79,11 @@
     - name: "Restore Image sur la SD Card {{ sd_card_device }}"
       command: "dd if=.tmp/{{ raspberry_pi_download.url | basename | replace('.zip','.img') }} of={{ sd_card_device }}"
       when: restore_img | bool
-      become: yes
+      become: true
 
     - name: Montage de la partition SD Card
       mount:
-        boot: no
+        boot: false
         src: "{{ sd_card_device }}{{ item.partition }}"
         path: "{{ item.path }}"
         fstype: "{{ item.fstype }}"
@@ -96,7 +95,16 @@
         - partition: "{{ sd_card_partition_prefix }}2"
           path: .mnt/root
           fstype: ext4
-      become: yes
+      become: true
+
+    - name: Création du répertoire SSH de pi
+      file:
+        path: .mnt/root/home/pi/.ssh
+        state: directory
+        owner: 1000
+        group: 1000
+        mode: 0700
+      become: true
 
     - name: Templates de configuration
       template:
@@ -108,14 +116,15 @@
         - root/etc/rc.local
         - root/etc/default/keyboard
         - root/etc/hostname
-      become: yes
+        - root/home/pi/.ssh/authorized_keys
+      become: true
 
     - name: Configuration hostname
       replace:
         path: .mnt/root/etc/hosts
         regexp: 'raspberrypi'
         replace: '{{hostname}}'
-      become: yes
+      become: true
 
     - name: Configuration HDMI
       replace:
@@ -123,14 +132,14 @@
         regexp: '^#(hdmi_force_hotplug|hdmi_drive)'
         replace: '\1'
       when: force_hdmi | bool
-      become: yes
+      become: true
 
     - name: Configuration SSH
       lineinfile:
         path: .mnt/root/etc/ssh/ssh_config
         line: "IPQoS cs0 cs0"
         state: present
-      become: yes
+      become: true
 
     - name: Configuration BT
       lineinfile:
@@ -138,7 +147,7 @@
         line: "dtoverlay=pi3-disable-bt"
         state: present
       when: disable_bluetooth | bool
-      become: yes
+      become: true
 
     - name: Affichage de l'IP au démarrage
       file:
@@ -146,7 +155,15 @@
         mode: 0755
         owner: root
         group: root
-      become: yes
+      become: true
+
+    - name: Configuration pour la connexion SSH de pi
+      file:
+        path: .mnt/root/home/pi/.ssh/authorized_keys
+        mode: 0600
+        owner: 1000
+        group: 1000
+      become: true
 
     - name: Demontage de la partition SD Card
       mount:
@@ -155,4 +172,4 @@
       with_items:
         - .mnt/boot
         - .mnt/root
-      become: yes
+      become: true

@@ -1,0 +1,9 @@
+---
+- name: Déploiement de Odin (robot secondaire)
+  hosts: odin
+  become: true
+
+  roles:
+    - arig_common
+
+  tasks:

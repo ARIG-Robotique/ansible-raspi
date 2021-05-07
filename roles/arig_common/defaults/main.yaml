@@ -1,0 +1,11 @@
+---
+
+# Repository par défaut
+arig_common_apt_repositories:
+  - deb-src http://raspbian.raspberrypi.org/raspbian/ buster main contrib non-free rpi
+
+# Hook d'activation
+arig_common_enable_qt: false
+
+# Configuration sur la Raspberry PI
+arig_common_raspberry_pi_config: {}

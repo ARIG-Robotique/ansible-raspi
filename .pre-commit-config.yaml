@@ -4,31 +4,42 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.4.0
     hooks:
-      - id: check-byte-order-marker
-        stages: ['commit']
       - id: check-case-conflict
         stages: ['commit']
       - id: check-executables-have-shebangs
         stages: ['commit']
       - id: check-json
         stages: ['commit']
+      - id: check-merge-conflict
+        stages: ['commit']
+      - id: check-symlinks
+        stages: ['commit']
+      - id: check-toml
+        stages: ['commit']
       - id: check-xml
         stages: ['commit']
       - id: check-yaml
+        args:
+          - "--allow-multiple-documents"
         stages: ['commit']
-      - id: check-merge-conflict
+      - id: destroyed-symlinks
         stages: ['commit']
       - id: detect-private-key
         stages: ['commit']
       - id: end-of-file-fixer
         stages: ['commit']
+      - id: fix-byte-order-marker
+        stages: ['commit']
+      - id: mixed-line-ending
+        stages: ['commit']
       - id: trailing-whitespace
         stages: ['commit']
 
-  - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.26.1
+  - repo: https://github.com/ansible-community/ansible-lint.git
+    rev: v5.0.8
     hooks:
-      - id: yamllint
+      - id: ansible-lint
+        exclude: .pre-commit-config.yaml
         stages: ['commit']
 
   - repo: https://git.iamthefij.com/iamthefij/ansible-pre-commit.git
@@ -41,10 +52,4 @@ repos:
     rev: v1.1.1
     hooks:
       - id: markdown-toc
-        stages: ['commit']
-
-  - repo: https://github.com/Lucas-C/pre-commit-hooks-go
-    rev: v1.0.1
-    hooks:
-      - id: checkmake
         stages: ['commit']

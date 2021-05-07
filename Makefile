@@ -1,5 +1,5 @@
 
-.PHONY: all clean test robots nerell elfa
+.PHONY: all clean test robots nerell odin tinker
 
 clean:
 	rm -Rf .mnt
@@ -9,20 +9,26 @@ test:
 	echo "Not yet implemented"
 
 encrypt:
-	ansible-vault encrypt --vault-password-file=.vault_password vars/*.vault.*
+	find . -type f -name *.vault.* -exec ansible-vault encrypt '{}' \;
 
 decrypt:
-	ansible-vault decrypt --vault-password-file=.vault_password vars/*.vault.*
+	find . -type f -name *.vault.* -exec ansible-vault decrypt '{}' \;
 
 sd_card:
-	ansible-playbook 01_prepare_sd.yml -K --vault-password-file=.vault_password
+	ansible-playbook 01_prepare_sd.yaml -K
 
 all: robots
 
 robots: nerell odin
 
 nerell:
-	ansible-playbook 02_nerell.yml
+	ansible-playbook 02_nerell.yaml
 
 odin:
-	ansible-playbook 03_odin.yml
+	ansible-playbook 02_odin.yaml
+
+tinker:
+	ansible-playbook 02_tinker.yaml
+
+list-hosts:
+	ansible-inventory --list

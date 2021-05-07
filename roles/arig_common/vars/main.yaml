@@ -1,0 +1,28 @@
+---
+
+arig_common_packages:
+  - htop
+  - raspi-config
+  - vim
+
+arig_common_qt_build:
+  - qt5-qmake
+  - libqt5gui5
+  - libqt5webengine-data
+  - libqt5webkit5
+
+arig_common_qt_packages:
+  - libudev-dev
+  - libinput-dev
+  - libts-dev
+  - libxcb-xinerama0-dev
+  - libxcb-xinerama0
+  - gdbserver
+
+# Configuration par défaut de raspi-config non interractive
+# https://github.com/RPi-Distro/raspi-config/blob/master/raspi-config
+arig_common_raspberry_pi_config_default:
+  screen_blanking: true
+  camera: false
+  i2c: false
+  vnc: false
