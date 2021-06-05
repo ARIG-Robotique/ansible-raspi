@@ -30,11 +30,6 @@
       default: false
       private: false
 
-    - name: disable_bluetooth
-      prompt: Désactivation du bluetooth
-      default: false
-      private: false
-
     - name: hostname
       prompt: Hostname
       private: false
@@ -115,7 +110,6 @@
       with_items:
         - boot/wpa_supplicant.conf
         - boot/ssh
-        - root/etc/rc.local
         - root/etc/default/keyboard
         - root/etc/hostname
         - root/home/pi/.ssh/authorized_keys
@@ -141,22 +135,6 @@
         path: .mnt/root/etc/ssh/ssh_config
         line: "IPQoS cs0 cs0"
         state: present
-      become: true
-
-    - name: Configuration BT
-      lineinfile:
-        path: .mnt/boot/config.txt
-        line: "dtoverlay=pi3-disable-bt"
-        state: present
-      when: disable_bluetooth | bool
-      become: true
-
-    - name: Affichage de l'IP au démarrage
-      file:
-        path: .mnt/root/etc/rc.local
-        mode: 0755
-        owner: root
-        group: root
       become: true
 
     - name: Configuration pour la connexion SSH de pi
