@@ -1,9 +1,13 @@
 ---
-- name: Déploiement de Nerell (robot principal)
+- name: Déploiement de la config de Nerell
   hosts: nerell
   become: true
 
   roles:
     - arig_common
 
-  tasks:
+- name: Déploiement de Nerell
+  hosts: nerell
+
+  roles:
+    - arig_robot

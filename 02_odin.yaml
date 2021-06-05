@@ -1,9 +1,13 @@
 ---
-- name: Déploiement de Odin (robot secondaire)
+- name: Déploiement de la config de Odin
   hosts: odin
   become: true
 
   roles:
     - arig_common
 
-  tasks:
+- name: Déploiement de Odin
+  hosts: odin
+
+  roles:
+    - arig_robot

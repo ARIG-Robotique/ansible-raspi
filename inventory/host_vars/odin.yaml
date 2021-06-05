@@ -1,11 +1,11 @@
 ---
 
-robot_name: Odin
+arig_robot_name: Odin
 
 arig_common_enable_qt: true
 
 arig_common_raspberry_pi_config:
-  # screen_blanking: true
+  screen_blanking: false
   # camera: false
   i2c: true
   # vnc: false

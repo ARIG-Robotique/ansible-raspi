@@ -1,9 +1,7 @@
 ---
-- name: Déploiement de Tinker (robot JoyCon)
+- name: Déploiement de la config de Tinker
   hosts: tinker
   become: true
 
   roles:
     - arig_common
-
-  tasks:

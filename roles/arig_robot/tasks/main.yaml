@@ -1,0 +1,15 @@
+- name: Création du fichier contenant le nom du robot
+  template:
+    src: home/pi/robot-name
+    dest: /home/pi/robot-name
+    owner: pi
+    group: pi
+    mode: 0755
+
+- name: Répertoire d'installation du robot
+  file:
+    path: "/home/pi/{{ arig_robot_name | lower }}"
+    state: directory
+    owner: pi
+    group: pi
+    mode: 0755

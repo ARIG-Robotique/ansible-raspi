@@ -1,6 +1,6 @@
 ---
 
-robot_name: Nerell
+arig_robot_name: Tinker
 
 arig_common_raspberry_pi_config:
   # screen_blanking: true
