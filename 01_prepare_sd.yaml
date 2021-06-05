@@ -1,11 +1,13 @@
 ---
 
-- hosts: localhost
+- name: Préparation de la SD Card Raspberry PI d'un robot
+  hosts: localhost
+  connection: local
 
   vars:
     raspberry_pi_download:
-      url: https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2021-03-25/2021-03-04-raspios-buster-armhf.zip
-      sha256: d3de1a33d2d4f4990345b6369960b04c70b577519e6f25f4d7ec601e305e932a
+      url: https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
+      sha256: c5dad159a2775c687e9281b1a0e586f7471690ae28f2f2282c90e7d59f64273c
 
   vars_prompt:
     - name: sd_card_device
