@@ -2,7 +2,7 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.1.0
     hooks:
       - id: check-case-conflict
         stages: ['commit']
@@ -36,7 +36,7 @@ repos:
         stages: ['commit']
 
   - repo: https://github.com/ansible-community/ansible-lint.git
-    rev: v5.0.8
+    rev: v5.3.2
     hooks:
       - id: ansible-lint
         exclude: .pre-commit-config.yaml
