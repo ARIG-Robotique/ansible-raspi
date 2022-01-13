@@ -111,6 +111,11 @@
   command: raspi-config nonint do_vnc 1
   when: not arig_common_raspberry_pi_config_merged.vnc and arig_common_raspberrypi_vnc.stdout != '1'
 
+- name: Install I2C Tools
+  apt:
+    name: i2c-tools
+    state: "{{ arig_common_raspberry_pi_config_merged.i2c | ternary('present', 'absent') }}"
+
 - name: Configuration pour QT
   block:
     - name: Build de packages pour QT
