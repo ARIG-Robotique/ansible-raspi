@@ -4,7 +4,7 @@
     dest: /home/pi/robot-name
     owner: pi
     group: pi
-    mode: 0755
+    mode: 0644
 
 - name: Répertoire d'installation du robot
   file:
