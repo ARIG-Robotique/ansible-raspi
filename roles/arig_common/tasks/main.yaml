@@ -127,4 +127,5 @@
         path: /usr/local/qt5.15
         state: directory
         mode: 0755
+
   when: arig_common_enable_qt

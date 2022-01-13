@@ -2,7 +2,9 @@
 
 # Repository par défaut
 arig_common_apt_repositories:
-  - deb-src http://raspbian.raspberrypi.org/raspbian/ buster main contrib non-free rpi
+  - deb-src http://deb.debian.org/debian bullseye main contrib non-free
+  - deb-src http://security.debian.org/debian-security bullseye-security main contrib non-free
+  - deb-src http://deb.debian.org/debian bullseye-updates main contrib non-free
 
 # Hook d'activation
 arig_common_enable_qt: false
