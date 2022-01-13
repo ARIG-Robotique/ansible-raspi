@@ -3,6 +3,7 @@
 arig_robot_name: Nerell
 
 arig_common_enable_qt: true
+arig_common_enable_java: true
 
 arig_common_raspberry_pi_config:
   screen_blanking: false

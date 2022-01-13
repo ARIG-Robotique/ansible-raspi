@@ -129,3 +129,19 @@
         mode: 0755
 
   when: arig_common_enable_qt
+
+- name: Installation Java
+  block:
+    - name: Download archive Java
+      get_url:
+        url: "{{ arig_common_java_download.url }}"
+        dest: "/opt/{{ arig_common_java_download.url | basename }}"
+        checksum: "sha1:{{ arig_common_java_download.sha1 }}"
+
+    - name: Extract archive Java
+      unarchive:
+        src: "/opt/{{ arig_common_java_download.url | basename }}"
+        dest: /opt
+        remote_src: true
+
+  when: arig_common_enable_java

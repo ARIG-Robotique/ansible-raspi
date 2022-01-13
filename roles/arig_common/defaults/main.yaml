@@ -6,8 +6,13 @@ arig_common_apt_repositories:
   - deb-src http://security.debian.org/debian-security bullseye-security main contrib non-free
   - deb-src http://deb.debian.org/debian bullseye-updates main contrib non-free
 
+arig_common_java_download:
+  url: https://download.bell-sw.com/java/13.0.2+9/bellsoft-jre13.0.2+9-linux-aarch64.tar.gz
+  sha1: 929cdeba133ec417a1e62cb03774271ba6d8e418
+
 # Hook d'activation
 arig_common_enable_qt: false
+arig_common_enable_java: false
 
 # Configuration sur la Raspberry PI
 arig_common_raspberry_pi_config: {}
