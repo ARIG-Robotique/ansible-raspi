@@ -145,7 +145,7 @@
         groups:
           - render
         state: present
-        append: yes
+        append: true
 
   when: arig_common_enable_qt
 
