@@ -1,10 +1,23 @@
-- name: Création du fichier contenant le nom du robot
-  template:
-    src: home/pi/robot-name
-    dest: /home/pi/robot-name
+- name: Image du robot pour le launcher
+  copy:
+    src: "home/pi/{{ arig_robot_name | lower }}.png"
+    dest: /home/pi/robot.png
     owner: pi
     group: pi
     mode: 0644
+
+- name: Création du fichier contenant le nom du robot
+  template:
+    src: "home/pi/{{ item.name }}"
+    dest: "/home/pi/{{ item.name }}"
+    owner: pi
+    group: pi
+    mode: "{{ item.mode | default('0644') }}"
+    when: item.name
+  loop:
+    - name: robot-name
+    - name: robot-launcher.sh
+      mode: "0755"
 
 - name: Répertoire d'installation du robot
   file:
@@ -13,3 +26,12 @@
     owner: pi
     group: pi
     mode: 0755
+
+- name: Robot launcher boot
+  blockinfile:
+    path: /home/pi/.bashrc
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ arig_robot_name | lower }}"
+    block: |
+      if [ "x${SSH_CONNECTION}" == "x" ] ; then
+        ./robot-launcher.sh
+      fi
