@@ -139,6 +139,14 @@
         state: directory
         mode: 0755
 
+    - name: Ajout de l'utilisateur pi dans le group render (hardware acceleration)
+      user:
+        name: pi
+        groups:
+          - render
+        state: present
+        append: yes
+
   when: arig_common_enable_qt
 
 - name: Installation Java
