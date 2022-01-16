@@ -6,9 +6,11 @@ arig_common_apt_repositories:
   - deb-src http://security.debian.org/debian-security bullseye-security main contrib non-free
   - deb-src http://deb.debian.org/debian bullseye-updates main contrib non-free
 
-arig_common_java_download:
-  url: https://download.bell-sw.com/java/13.0.2+9/bellsoft-jre13.0.2+9-linux-aarch64.tar.gz
-  sha1: 929cdeba133ec417a1e62cb03774271ba6d8e418
+arig_common_java_downloads:
+  - url: https://download.bell-sw.com/java/11.0.13+8/bellsoft-jre11.0.13+8-linux-aarch64.tar.gz
+    sha1: c384ee0b81448b930cb1121e998ea28f8ff77971
+  - url: https://download.bell-sw.com/java/13.0.2+9/bellsoft-jre13.0.2+9-linux-aarch64.tar.gz
+    sha1: 929cdeba133ec417a1e62cb03774271ba6d8e418
 
 # Hook d'activation
 arig_common_enable_qt: false

@@ -153,14 +153,16 @@
   block:
     - name: Download archive Java
       get_url:
-        url: "{{ arig_common_java_download.url }}"
-        dest: "/opt/{{ arig_common_java_download.url | basename }}"
-        checksum: "sha1:{{ arig_common_java_download.sha1 }}"
+        url: "{{ item.url }}"
+        dest: "/opt/{{ item.url | basename }}"
+        checksum: "sha1:{{ item.sha1 }}"
+      loop: "{{ arig_common_java_downloads }}"
 
     - name: Extract archive Java
       unarchive:
-        src: "/opt/{{ arig_common_java_download.url | basename }}"
+        src: "/opt/{{ item.url | basename }}"
         dest: /opt
         remote_src: true
+      loop: "{{ arig_common_java_downloads }}"
 
   when: arig_common_enable_java
