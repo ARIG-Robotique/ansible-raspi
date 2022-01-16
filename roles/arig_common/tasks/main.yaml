@@ -116,6 +116,12 @@
     name: i2c-tools
     state: "{{ arig_common_raspberry_pi_config_merged.i2c | ternary('present', 'absent') }}"
 
+- name: Ajout fichier de contrôle du SoC
+  template:
+    src: opthome/pi/bcmstat.py
+    dest: /opt/bcmstat.py
+    mode: 0755
+
 - name: Configuration pour QT
   block:
     - name: Build de packages pour QT
