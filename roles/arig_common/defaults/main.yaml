@@ -18,3 +18,9 @@ arig_common_enable_java: false
 
 # Configuration sur la Raspberry PI
 arig_common_raspberry_pi_config: {}
+
+# Configuration du boot config.txt
+arig_common_raspberry_pi_boot_config: []
+
+# Configuration de la command line de boot
+arig_common_raspberry_pi_cmdline: undefined

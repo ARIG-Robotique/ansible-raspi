@@ -122,6 +122,33 @@
     dest: /opt/bcmstat.py
     mode: 0755
 
+- name: Ajout des paramètres du fichier /boot/config.txt
+  lineinfile:
+    line: "{{ item }}"
+    dest: /boot/config.txt
+    regexp: "^{{ item }}"
+  loop: "{{ arig_common_raspberry_pi_boot_config }}"
+  register: arig_common_raspberry_pi_boot_config_state
+
+- name: Génération command line de boot
+  template:
+    src: boot/cmdline.txt
+    dest: /boot/cmdline.txt
+    mode: 0755
+  when: arig_common_raspberry_pi_cmdline is defined
+  register: arig_common_raspberry_pi_cmdline_state
+
+- name: Reboot
+  reboot:
+    msg: "Reboot initiated by Ansible"
+    connect_timeout: 5
+    reboot_timeout: 600
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+    test_command: whoami
+  when: arig_common_raspberry_pi_boot_config_state.changed
+        or arig_common_raspberry_pi_cmdline_state.changed
+
 - name: Configuration pour QT
   block:
     - name: Build de packages pour QT

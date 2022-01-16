@@ -28,6 +28,7 @@ repos:
         stages: ['commit']
       - id: end-of-file-fixer
         stages: ['commit']
+        exclude: "^(.*/)?cmdline.txt$"
       - id: fix-byte-order-marker
         stages: ['commit']
       - id: mixed-line-ending
