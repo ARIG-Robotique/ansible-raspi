@@ -118,7 +118,7 @@
 
 - name: Ajout fichier de contrôle du SoC
   template:
-    src: opthome/pi/bcmstat.py
+    src: opt/bcmstat.py
     dest: /opt/bcmstat.py
     mode: 0755
 
