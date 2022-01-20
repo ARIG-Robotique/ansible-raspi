@@ -196,4 +196,26 @@
         remote_src: true
       loop: "{{ arig_common_java_downloads }}"
 
+    - name: Installation des outils pour le build de WiringPi
+      apt:
+        name: "{{ item }}"
+      loop:
+        - git-core
+        - gcc
+        - make
+
+    - name: Clone repository WiringPi (unofficial)
+      git:
+        repo: https://github.com/WiringPi/WiringPi
+        version: master
+        single_branch: true
+        dest: /opt/wiringpi
+
+    - name: Compile and install WiringPi
+      shell:
+        chdir: /opt/wiringpi
+        cmd: ./build > build.log
+      args:
+        creates: /usr/local/lib/libwiringPi.so
+
   when: arig_common_enable_java
