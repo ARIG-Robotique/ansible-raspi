@@ -160,6 +160,10 @@
       apt:
         name: "{{ arig_common_qt_packages }}"
 
+    - name: Ajout des fonts pour QT
+      apt:
+        name: fonts-*
+
     - name: Création du répertoire de destination pour QT (cross compile)
       file:
         path: /usr/local/qt5.15
