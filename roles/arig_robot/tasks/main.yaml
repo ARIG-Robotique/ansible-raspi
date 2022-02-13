@@ -6,14 +6,13 @@
     group: pi
     mode: 0644
 
-- name: Création du fichier contenant le nom du robot
+- name: Fichier pour le lanceur de robot
   template:
     src: "home/pi/{{ item.name }}"
     dest: "/home/pi/{{ item.name }}"
     owner: pi
     group: pi
     mode: "{{ item.mode | default('0644') }}"
-    when: item.name
   loop:
     - name: robot-name
     - name: robot-launcher.sh

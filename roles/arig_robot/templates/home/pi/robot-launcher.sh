@@ -1,6 +1,11 @@
 #!/bin/bash
 # {{ ansible_managed }}
 
+if [ ! -f robot-launcher ] ; then
+  echo "Pas de programme robot-launcher"
+  exit 0
+fi
+
 ACTION="init"
 EXTERNAL_DIR="/tmp/external-dir"
 ROBOT_NAME=$(cat robot-name)
