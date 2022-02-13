@@ -30,11 +30,6 @@
       default: true
       private: false
 
-    - name: force_hdmi
-      prompt: Configuration pour force la sortie HDMI
-      default: false
-      private: false
-
     - name: hostname
       prompt: Hostname
       private: false
@@ -132,19 +127,17 @@
         replace: '{{hostname}}'
       become: true
 
-    - name: Configuration HDMI
-      replace:
-        path: .mnt/boot/config.txt
-        regexp: '^#(hdmi_force_hotplug|hdmi_drive)'
-        replace: '\1'
-      when: force_hdmi | bool
-      become: true
+    - name: Check fichier conf SSH exist
+      stat:
+        path: .mnt/root/etc/ssh/ssh_config
+      register: ssh_config_stat
 
     - name: Configuration SSH
       lineinfile:
         path: .mnt/root/etc/ssh/ssh_config
         line: "IPQoS cs0 cs0"
         state: present
+      when: ssh_config_stat.stat.exists
       become: true
 
     - name: Configuration pour la connexion SSH de pi
