@@ -6,8 +6,13 @@
 
   vars:
     raspberry_pi_download:
-      url: https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2021-11-08/2021-10-30-raspios-bullseye-arm64-lite.zip
-      sha256: c88109027eac44b9ff37a7f3eb1873cdf6d7ca61a0264ec0e95870ca96afd242
+      buster:
+        url: https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2021-05-28/2021-05-07-raspios-buster-arm64-lite.zip
+        sha256: 868cca691a75e4280c878eb6944d95e9789fa5f4bbce2c84060d4c39d057a042
+
+      bullseye:
+        url: https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2022-01-28/2022-01-28-raspios-bullseye-arm64-lite.zip
+        sha256: d694d2838018cf0d152fe81031dba83182cee79f785c033844b520d222ac12f5
 
   vars_prompt:
     - name: sd_card_device
@@ -34,6 +39,11 @@
       prompt: Hostname
       private: false
 
+    - name: os_code_name
+      prompt: Code name de la version de Raspi OS (bullseye ou buster)
+      default: bullseye
+      private: false
+
   tasks:
     - name: Inclusion des variables
       include_vars:
@@ -51,30 +61,30 @@
 
     - name: Contrôle téléchargement nécéssaire
       stat:
-        path: ".tmp/{{ raspberry_pi_download.url | basename }}"
+        path: ".tmp/{{ raspberry_pi_download[os_code_name].url | basename }}"
         checksum_algorithm: sha256
       register: raspberry_pi_info
 
     - name: Download image d'installation Raspberry PI
       get_url:
-        url: "{{ raspberry_pi_download.url }}"
+        url: "{{ raspberry_pi_download[os_code_name].url }}"
         dest: .tmp/
-        checksum: "sha256:{{ raspberry_pi_download.sha256 }}"
-      when: not raspberry_pi_info.stat.exists or raspberry_pi_info.stat.checksum != raspberry_pi_download.sha256
+        checksum: "sha256:{{ raspberry_pi_download[os_code_name].sha256 }}"
+      when: not raspberry_pi_info.stat.exists or raspberry_pi_info.stat.checksum != raspberry_pi_download[os_code_name].sha256
 
     - name: Contrôle unarchive déjà effectué
       stat:
-        path: ".tmp/{{ raspberry_pi_download.url | basename | replace('.zip','.img') }}"
+        path: ".tmp/{{ raspberry_pi_download[os_code_name].url | basename | replace('.zip','.img') }}"
       register: unarchive_info
 
     - name: Unzip image Rapsberry PI
       unarchive:
-        src: ".tmp/{{ raspberry_pi_download.url | basename }}"
+        src: ".tmp/{{ raspberry_pi_download[os_code_name].url | basename }}"
         dest: .tmp/
       when: not unarchive_info.stat.exists
 
     - name: "Restore Image sur la SD Card {{ sd_card_device }}"
-      command: "dd if=.tmp/{{ raspberry_pi_download.url | basename | replace('.zip','.img') }} of={{ sd_card_device }}"
+      command: "dd if=.tmp/{{ raspberry_pi_download[os_code_name].url | basename | replace('.zip','.img') }} of={{ sd_card_device }}"
       when: restore_img | bool
       become: true
 

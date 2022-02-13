@@ -1,1 +1,1 @@
-{{ arig_common_raspberry_pi_cmdline }}
+{{ arig_common_raspberry_pi_cmdline[ansible_distribution_release] }}

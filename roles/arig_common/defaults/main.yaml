@@ -2,9 +2,15 @@
 
 # Repository par défaut
 arig_common_apt_repositories:
-  - deb-src http://deb.debian.org/debian bullseye main contrib non-free
-  - deb-src http://security.debian.org/debian-security bullseye-security main contrib non-free
-  - deb-src http://deb.debian.org/debian bullseye-updates main contrib non-free
+  buster:
+    - deb-src http://deb.debian.org/debian buster main contrib non-free
+    - deb-src http://deb.debian.org/debian-security/ buster/updates main contrib non-free
+    - deb-src http://deb.debian.org/debian buster-updates main contrib non-free
+
+  bullseye:
+    - deb-src http://deb.debian.org/debian bullseye main contrib non-free
+    - deb-src http://security.debian.org/debian-security bullseye-security main contrib non-free
+    - deb-src http://deb.debian.org/debian bullseye-updates main contrib non-free
 
 arig_common_java_downloads:
   - url: https://download.bell-sw.com/java/11.0.13+8/bellsoft-jre11.0.13+8-linux-aarch64.tar.gz

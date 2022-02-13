@@ -10,7 +10,7 @@
   apt_repository:
     repo: "{{ item }}"
     state: present
-  loop: "{{ arig_common_apt_repositories }}"
+  loop: "{{ arig_common_apt_repositories[ansible_distribution_release] }}"
   register: arig_common_repository_task
 
 - name: Update si les repositories on changés
@@ -135,7 +135,7 @@
     src: boot/cmdline.txt
     dest: /boot/cmdline.txt
     mode: 0755
-  when: arig_common_raspberry_pi_cmdline is defined
+  when: arig_common_raspberry_pi_cmdline != 'undefined'
   register: arig_common_raspberry_pi_cmdline_state
 
 - name: Reboot
