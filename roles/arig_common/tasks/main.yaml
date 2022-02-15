@@ -163,6 +163,7 @@
     - name: Ajout des fonts pour QT
       apt:
         name: fonts-*
+      when: ansible_distribution_release == "bullseye"
 
     - name: Création du répertoire de destination pour QT (cross compile)
       file:
