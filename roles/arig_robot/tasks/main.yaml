@@ -1,5 +1,6 @@
+---
 - name: Image du robot pour le launcher
-  copy:
+  ansible.builtin.copy:
     src: "home/pi/{{ arig_robot_name | lower }}.png"
     dest: /home/pi/robot.png
     owner: pi
@@ -7,7 +8,7 @@
     mode: 0644
 
 - name: Fichier pour le lanceur de robot
-  template:
+  ansible.builtin.template:
     src: "home/pi/{{ item.name }}"
     dest: "/home/pi/{{ item.name }}"
     owner: pi
@@ -19,7 +20,7 @@
       mode: "0755"
 
 - name: Répertoire d'installation du robot
-  file:
+  ansible.builtin.file:
     path: "/home/pi/{{ arig_robot_name | lower }}"
     state: directory
     owner: pi
@@ -27,7 +28,7 @@
     mode: 0755
 
 - name: Robot launcher boot
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /home/pi/.bashrc
     marker: "# {mark} ANSIBLE MANAGED BLOCK {{ arig_robot_name | lower }}"
     block: |

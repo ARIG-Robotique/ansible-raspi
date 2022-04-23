@@ -21,4 +21,4 @@ arig_common_raspberry_pi_boot_config:
   - core_freq=500
   - core_freq_min=500
   - dtparam=i2c_arm_baudrate=100000
-  #- gpu_mem=128
+  # - gpu_mem=128

@@ -1,13 +1,13 @@
 ---
 
 - name: Changement du mot de passe de l'utilisateur pi
-  user:
+  ansible.builtin.user:
     name: pi
     update_password: always
     password: "{{ lookup('password', 'credentials/' + inventory_hostname + ' encrypt=sha512_crypt') }}"
 
 - name: Ajout des repositories APT complémentaire
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "{{ item }}"
     state: present
   loop: "{{ arig_common_apt_repositories[ansible_distribution_release] }}"
@@ -16,15 +16,15 @@
 - name: Update si les repositories on changés
   block:
     - name: Update cache
-      apt:
+      ansible.builtin.apt:
         update_cache: true
 
     - name: Dist upgrade
-      apt:
+      ansible.builtin.apt:
         upgrade: dist
 
     - name: Reboot
-      reboot:
+      ansible.builtin.reboot:
         msg: "Reboot initiated by Ansible"
         connect_timeout: 5
         reboot_timeout: 600
@@ -34,40 +34,40 @@
   when: arig_common_repository_task.changed
 
 - name: Installation des packages communs
-  apt:
+  ansible.builtin.apt:
     name: "{{ arig_common_packages }}"
 
 - name: Merge configuration
-  set_fact:
+  ansible.builtin.set_fact:
     arig_common_raspberry_pi_config_merged: "{{ arig_common_raspberry_pi_config_default | combine(arig_common_raspberry_pi_config) }}"
 
 - name: Get Raspberry Pi type
-  command: raspi-config nonint get_pi_type
+  ansible.builtin.command: raspi-config nonint get_pi_type
   register: arig_common_raspberrypi_type
   changed_when: false
 
 - name: Get Raspberry Pi screen blanking
-  command: raspi-config nonint get_blanking
+  ansible.builtin.command: raspi-config nonint get_blanking
   register: arig_common_raspberrypi_screen_blanking
   changed_when: false
 
 - name: Get Raspberry Pi camera
-  command: raspi-config nonint get_camera
+  ansible.builtin.command: raspi-config nonint get_camera
   register: arig_common_raspberrypi_camera
   changed_when: false
 
 - name: Get Raspberry Pi I2C
-  command: raspi-config nonint get_i2c
+  ansible.builtin.command: raspi-config nonint get_i2c
   register: arig_common_raspberrypi_i2c
   changed_when: false
 
 - name: Get Raspberry Pi VNC
-  command: raspi-config nonint get_vnc
+  ansible.builtin.command: raspi-config nonint get_vnc
   register: arig_common_raspberrypi_vnc
   changed_when: false
 
 - name: Show RaspberryPI info
-  debug:
+  ansible.builtin.debug:
     msg:
       - "Type            : {{ arig_common_raspberrypi_type.stdout }} (1->PiOne, 2->PiTwo, 0->Others)"
       - "Screen Blanking : {{ arig_common_raspberrypi_screen_blanking.stdout }} (0->Enable, 1->Disabled)"
@@ -76,54 +76,54 @@
       - "VNC             : {{ arig_common_raspberrypi_vnc.stdout }} (0->Enable, 1->Disabled)"
 
 - name: Show RaspberryPI config requise
-  debug:
+  ansible.builtin.debug:
     var: arig_common_raspberry_pi_config_merged
 
 - name: Enable Screen Blanking
-  command: raspi-config nonint do_blanking 0
+  ansible.builtin.command: raspi-config nonint do_blanking 0
   when: arig_common_raspberry_pi_config_merged.screen_blanking and arig_common_raspberrypi_screen_blanking.stdout != '0'
 
 - name: Disable Screen Blanking
-  command: raspi-config nonint do_blanking 1
+  ansible.builtin.command: raspi-config nonint do_blanking 1
   when: not arig_common_raspberry_pi_config_merged.screen_blanking and arig_common_raspberrypi_screen_blanking.stdout != '1'
 
 - name: Enable Camera
-  command: raspi-config nonint do_camera 0
+  ansible.builtin.command: raspi-config nonint do_camera 0
   when: arig_common_raspberry_pi_config_merged.camera and arig_common_raspberrypi_camera.stdout != '0'
 
 - name: Disable Camera
-  command: raspi-config nonint do_camera 1
+  ansible.builtin.command: raspi-config nonint do_camera 1
   when: not arig_common_raspberry_pi_config_merged.camera and arig_common_raspberrypi_camera.stdout != '1'
 
 - name: Enable I2C
-  command: raspi-config nonint do_i2c 0
+  ansible.builtin.command: raspi-config nonint do_i2c 0
   when: arig_common_raspberry_pi_config_merged.i2c and arig_common_raspberrypi_i2c.stdout != '0'
 
 - name: Disable I2C
-  command: raspi-config nonint do_i2c 1
+  ansible.builtin.command: raspi-config nonint do_i2c 1
   when: not arig_common_raspberry_pi_config_merged.i2c and arig_common_raspberrypi_i2c.stdout != '1'
 
 - name: Enable VNC
-  command: raspi-config nonint do_vnc 0
+  ansible.builtin.command: raspi-config nonint do_vnc 0
   when: arig_common_raspberry_pi_config_merged.vnc and arig_common_raspberrypi_vnc.stdout != '0'
 
 - name: Disable VNC
-  command: raspi-config nonint do_vnc 1
+  ansible.builtin.command: raspi-config nonint do_vnc 1
   when: not arig_common_raspberry_pi_config_merged.vnc and arig_common_raspberrypi_vnc.stdout != '1'
 
 - name: Install I2C Tools
-  apt:
+  ansible.builtin.apt:
     name: i2c-tools
     state: "{{ arig_common_raspberry_pi_config_merged.i2c | ternary('present', 'absent') }}"
 
 - name: Ajout fichier de contrôle du SoC
-  template:
+  ansible.builtin.template:
     src: opt/bcmstat.py
     dest: /opt/bcmstat.py
     mode: 0755
 
 - name: Ajout des paramètres du fichier /boot/config.txt
-  lineinfile:
+  ansible.builtin.lineinfile:
     line: "{{ item }}"
     dest: /boot/config.txt
     regexp: "^{{ item }}"
@@ -131,7 +131,7 @@
   register: arig_common_raspberry_pi_boot_config_state
 
 - name: Génération command line de boot
-  template:
+  ansible.builtin.template:
     src: boot/cmdline.txt
     dest: /boot/cmdline.txt
     mode: 0755
@@ -139,7 +139,7 @@
   register: arig_common_raspberry_pi_cmdline_state
 
 - name: Reboot
-  reboot:
+  ansible.builtin.reboot:
     msg: "Reboot initiated by Ansible"
     connect_timeout: 5
     reboot_timeout: 600
@@ -152,27 +152,27 @@
 - name: Configuration pour QT
   block:
     - name: Build de packages pour QT
-      apt:
+      ansible.builtin.apt:
         name: "{{ arig_common_qt_build }}"
         state: build-dep
 
     - name: Ajout des packages pour QT
-      apt:
+      ansible.builtin.apt:
         name: "{{ arig_common_qt_packages }}"
 
     - name: Ajout des fonts pour QT
-      apt:
+      ansible.builtin.apt:
         name: fonts-*
       when: ansible_distribution_release == "bullseye"
 
     - name: Création du répertoire de destination pour QT (cross compile)
-      file:
+      ansible.builtin.file:
         path: /usr/local/qt5.15
         state: directory
         mode: 0755
 
     - name: Ajout de l'utilisateur pi dans le group render (hardware acceleration)
-      user:
+      ansible.builtin.user:
         name: pi
         groups:
           - render
@@ -184,21 +184,24 @@
 - name: Installation Java
   block:
     - name: Download archive Java
-      get_url:
+      ansible.builtin.get_url:
         url: "{{ item.url }}"
         dest: "/opt/{{ item.url | basename }}"
         checksum: "sha1:{{ item.sha1 }}"
+        owner: root
+        group: root
+        mode: 0644
       loop: "{{ arig_common_java_downloads }}"
 
     - name: Extract archive Java
-      unarchive:
+      ansible.builtin.unarchive:
         src: "/opt/{{ item.url | basename }}"
         dest: /opt
         remote_src: true
       loop: "{{ arig_common_java_downloads }}"
 
     - name: Installation des outils pour le build de WiringPi
-      apt:
+      ansible.builtin.apt:
         name: "{{ item }}"
       loop:
         - git-core
@@ -206,14 +209,14 @@
         - make
 
     - name: Clone repository WiringPi (unofficial)
-      git:
+      ansible.builtin.git:
         repo: https://github.com/WiringPi/WiringPi
         version: master
         single_branch: true
         dest: /opt/wiringpi
 
     - name: Compile and install WiringPi
-      shell:
+      ansible.builtin.shell:
         chdir: /opt/wiringpi
         cmd: ./build > build.log
       args:

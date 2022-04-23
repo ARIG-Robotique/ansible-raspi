@@ -5,12 +5,12 @@ all:
     localhost:
       ansible_host: 127.0.0.1
       connection: local
-    odin:
-    nerell:
-    tinker:
+    odin: []
+    nerell: []
+    tinker: []
 
   children:
     robots:
       hosts:
-        nerell:
-        odin:
+        nerell: []
+        odin: []
