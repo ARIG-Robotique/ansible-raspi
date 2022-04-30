@@ -22,5 +22,5 @@ arig_common_raspberry_pi_boot_config:
   - lcd_rotate=2
   - core_freq=500
   - core_freq_min=500
-  - dtparam=i2c_arm_baudrate=100000
+  - dtparam=i2c_arm_baudrate=110000
   # - gpu_mem=128
