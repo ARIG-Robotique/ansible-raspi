@@ -138,6 +138,43 @@
   when: arig_common_raspberry_pi_cmdline != 'undefined'
   register: arig_common_raspberry_pi_cmdline_state
 
+- name: Install plymouth splash screen manager
+  ansible.builtin.apt:
+    name: "{{ item }}"
+  loop:
+    - plymouth
+    - plymouth-themes
+    - pix-plym-splash
+
+- name: ARIG Plymouth theme directory
+  ansible.builtin.file:
+    path: "/usr/share/plymouth/themes/arig"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: ARIG Plymooth theme template files
+  ansible.builtin.template:
+    src: "usr/share/plymouth/themes/arig/{{ item.name }}"
+    dest: "/usr/share/plymouth/themes/arig/{{ item.name }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode | default('0644') }}"
+  loop:
+    - name: arig.plymouth
+    - name: arig.script
+
+- name: ARIG Plymooth theme raw files
+  ansible.builtin.copy:
+    src: "usr/share/plymouth/themes/arig/{{ item.name }}"
+    dest: "/usr/share/plymouth/themes/arig/{{ item.name }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode | default('0644') }}"
+  loop:
+    - name: boot_screen.png
+
 - name: Reboot
   ansible.builtin.reboot:
     msg: "Reboot initiated by Ansible"

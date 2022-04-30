@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+[Plymouth Theme]
+Name=ARIG
+Description=ARIG Boot screen
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/arig
+ScriptFile=/usr/share/plymouth/themes/arig/arig.script
