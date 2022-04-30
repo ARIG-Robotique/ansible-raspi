@@ -17,6 +17,7 @@ arig_common_raspberry_pi_cmdline:
 
 arig_common_raspberry_pi_boot_config:
   - disable_splash=1
+  - boot_delay=0
   - force_turbo=1
   - lcd_rotate=2
   - core_freq=500
