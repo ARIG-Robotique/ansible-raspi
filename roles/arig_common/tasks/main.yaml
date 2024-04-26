@@ -131,6 +131,11 @@
     name: i2c-tools
     state: "{{ arig_common_raspberry_pi_config_merged.i2c | ternary('present', 'absent') }}"
 
+- name: Install CAN Tools
+  ansible.builtin.apt:
+    name: can-utils
+    state: "{{ arig_common_raspberry_pi_config_merged.can | ternary('present', 'absent') }}"
+
 - name: Ajout fichier de contrôle du SoC
   ansible.builtin.template:
     src: opt/bcmstat.py
