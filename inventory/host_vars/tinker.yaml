@@ -5,7 +5,6 @@ arig_robot_name: Tinker
 arig_common_enable_java: true
 
 arig_common_raspberry_pi_config:
-  # screen_blanking: true
-  # camera: false
+  screen_blanking: true
   i2c: true
   vnc: true

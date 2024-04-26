@@ -22,7 +22,9 @@ arig_common_qt_packages:
 # Configuration par défaut de raspi-config non interractive
 # https://github.com/RPi-Distro/raspi-config/blob/master/raspi-config
 arig_common_raspberry_pi_config_default:
-  screen_blanking: true
+  screen_blanking: false
+  vnc: false
   camera: false
   i2c: false
-  vnc: false
+  spi: false
+  can: false

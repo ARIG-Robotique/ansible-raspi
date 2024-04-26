@@ -6,10 +6,7 @@ arig_common_enable_qt: true
 arig_common_enable_java: true
 
 arig_common_raspberry_pi_config:
-  screen_blanking: false
-  # camera: false
   i2c: true
-  # vnc: false
 
 arig_common_raspberry_pi_cmdline:
   buster: "console=serial0,115200 console=tty1 root={{ ansible_cmdline.root }} rootfstype=ext4 elevator=deadline fsck.repair=yes video=DSI-1:800x480M@60,rotate=180 rootwait quiet splash plymouth.ignore-serial-consoles"
