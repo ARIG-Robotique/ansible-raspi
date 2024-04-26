@@ -61,6 +61,11 @@
   register: arig_common_raspberrypi_i2c
   changed_when: false
 
+- name: Get Raspberry Pi SPI
+  ansible.builtin.command: raspi-config nonint get_spi
+  register: arig_common_raspberrypi_spi
+  changed_when: false
+
 - name: Get Raspberry Pi VNC
   ansible.builtin.command: raspi-config nonint get_vnc
   register: arig_common_raspberrypi_vnc
@@ -73,6 +78,7 @@
       - "Screen Blanking : {{ arig_common_raspberrypi_screen_blanking.stdout }} (0->Enable, 1->Disabled)"
       - "Camera          : {{ arig_common_raspberrypi_camera.stdout }} (0->Enable, 1->Disabled)"
       - "I2C             : {{ arig_common_raspberrypi_i2c.stdout }} (0->Enable, 1->Disabled)"
+      - "SPI             : {{ arig_common_raspberrypi_spi.stdout }} (0->Enable, 1->Disabled)"
       - "VNC             : {{ arig_common_raspberrypi_vnc.stdout }} (0->Enable, 1->Disabled)"
 
 - name: Show RaspberryPI config requise
@@ -102,6 +108,15 @@
 - name: Disable I2C
   ansible.builtin.command: raspi-config nonint do_i2c 1
   when: not arig_common_raspberry_pi_config_merged.i2c and arig_common_raspberrypi_i2c.stdout != '1'
+
+- name: Enable SPI
+  ansible.builtin.command: raspi-config nonint do_spi 0
+  when: arig_common_raspberry_pi_config_merged.spi and arig_common_raspberrypi_spi.stdout != '0'
+
+- name: Disable SPI
+  ansible.builtin.command: raspi-config nonint do_spi 1
+  when: not arig_common_raspberry_pi_config_merged.spi and arig_common_raspberrypi_spi.stdout != '1'
+
 
 - name: Enable VNC
   ansible.builtin.command: raspi-config nonint do_vnc 0
