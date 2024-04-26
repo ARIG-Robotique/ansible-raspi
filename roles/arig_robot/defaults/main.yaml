@@ -1,0 +1,2 @@
+---
+arig_robot_image_name: "{{ arig_robot_name | lower }}"
