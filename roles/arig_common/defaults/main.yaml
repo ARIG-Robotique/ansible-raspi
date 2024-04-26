@@ -13,14 +13,14 @@ arig_common_apt_repositories:
     - deb-src http://deb.debian.org/debian bullseye-updates main contrib non-free
 
 arig_common_java_downloads:
-  - url: https://download.bell-sw.com/java/11.0.14+9/bellsoft-jre11.0.14+9-linux-aarch64.tar.gz
-    sha1: 2d4f4a17f8a972b61e991ef1324f4f5f4cf8ee3d
-  - url: https://download.bell-sw.com/java/13.0.2+9/bellsoft-jre13.0.2+9-linux-aarch64.tar.gz
-    sha1: 929cdeba133ec417a1e62cb03774271ba6d8e418
-  - url: https://download.bell-sw.com/java/17.0.3+7/bellsoft-jre17.0.3+7-linux-aarch64.tar.gz
-    sha1: 5edef2a6d9a4a16d402ce28e04ef0bcad5573022
+  - url: https://download.bell-sw.com/java/17.0.11+10/bellsoft-jre17.0.11+10-linux-aarch64.tar.gz
+    sha1: 6fff17c19690b89def564cdef6e50631069c6e47
   - url: https://download.bell-sw.com/java/18.0.1+12/bellsoft-jre18.0.1+12-linux-aarch64.tar.gz
     sha1: 7b7f430ec282a3cc284e5ec60dace83bf7e7904d
+  - url: https://download.bell-sw.com/java/21.0.3+10/bellsoft-jre21.0.3+10-linux-aarch64.tar.gz
+    sha1: 8e199395a13b00f411388cada787636e1473f1e1
+  - url: https://download.bell-sw.com/java/22.0.1+10/bellsoft-jre22.0.1+10-linux-aarch64.tar.gz
+    sha1: 0b0142c5709c0a7a9a5a1d8915edbd624f593751
 
 # Hook d'activation
 arig_common_enable_qt: false
