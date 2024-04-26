@@ -20,4 +20,5 @@ arig_common_raspberry_pi_boot_config:
   - core_freq_min=500
   - dtparam=i2c_arm_baudrate=110000
   - dtoverlay=disable-bt
+  - dtoverlay=mcp251xfd,spi0-0,oscillator=40000000,interrupt=25
   # - gpu_mem=128

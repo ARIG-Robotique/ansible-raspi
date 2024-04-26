@@ -7,6 +7,8 @@ arig_common_enable_java: true
 
 arig_common_raspberry_pi_config:
   i2c: true
+  spi: true
+  can: true
 
 arig_common_raspberry_pi_cmdline:
   buster: "console=serial0,115200 console=tty1 root={{ ansible_cmdline.root }} rootfstype=ext4 elevator=deadline fsck.repair=yes video=DSI-1:800x480M@60,rotate=180 rootwait quiet splash plymouth.ignore-serial-consoles"
@@ -21,4 +23,5 @@ arig_common_raspberry_pi_boot_config:
   - core_freq_min=500
   - dtparam=i2c_arm_baudrate=110000
   - dtoverlay=disable-bt
+  - dtoverlay=mcp251xfd,spi0-0,oscillator=40000000,interrupt=25
   # - gpu_mem=128
