@@ -26,6 +26,9 @@ arig_common_java_downloads:
 arig_common_enable_qt: false
 arig_common_enable_java: false
 
+# Bootscreen wallpaper config
+arig_common_bootscreen_wallpaper_reversed: False
+
 # Configuration sur la Raspberry PI
 arig_common_raspberry_pi_config: {}
 
