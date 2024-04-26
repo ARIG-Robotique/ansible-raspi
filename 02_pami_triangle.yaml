@@ -1,0 +1,13 @@
+---
+- name: Déploiement de la config du Pami Triangle
+  hosts: pami-triangle
+  become: true
+
+  roles:
+    - arig_common
+
+- name: Déploiement de Pami Triangle
+  hosts: pami-triangle
+
+  roles:
+    - arig_robot

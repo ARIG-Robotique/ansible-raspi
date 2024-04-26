@@ -1,0 +1,13 @@
+---
+- name: Déploiement de la config du Pami Rond
+  hosts: pami-rond
+  become: true
+
+  roles:
+    - arig_common
+
+- name: Déploiement de Pami Rond
+  hosts: pami-rond
+
+  roles:
+    - arig_robot

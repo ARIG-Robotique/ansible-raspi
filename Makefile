@@ -21,6 +21,8 @@ all: robots
 
 robots: nerell odin
 
+pamis: pami-triangle pami-carre pami-rond
+
 nerell:
 	ansible-playbook 02_nerell.yaml
 
@@ -29,6 +31,15 @@ odin:
 
 tinker:
 	ansible-playbook 02_tinker.yaml
+
+pami-triangle:
+	ansible-playbook 02_pami_triangle.yaml
+
+pami-carre:
+	ansible-playbook 02_pami_carre.yaml
+
+pami-rond:
+	ansible-playbook 02_pami_rond.yaml
 
 list-hosts:
 	ansible-inventory --list

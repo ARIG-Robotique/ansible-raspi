@@ -1,0 +1,13 @@
+---
+- name: Déploiement de la config du Pami Carre
+  hosts: pami-carre
+  become: true
+
+  roles:
+    - arig_common
+
+- name: Déploiement de Pami Carre
+  hosts: pami-carre
+
+  roles:
+    - arig_robot
