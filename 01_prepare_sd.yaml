@@ -17,12 +17,11 @@
   vars_prompt:
     - name: sd_card_device
       prompt: SD Card device
-      default: /dev/mmcblk0
+      default: /dev/sda
       private: false
 
     - name: sd_card_partition_prefix
       prompt: SD Card prefixe de partition
-      default: p
       private: false
 
     - name: restore_img
@@ -36,7 +35,7 @@
 
     - name: os_code_name
       prompt: Code name de la version de Raspi OS (bullseye ou buster)
-      default: bullseye
+      default: buster
       private: false
 
   tasks:
