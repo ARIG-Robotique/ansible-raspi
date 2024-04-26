@@ -1,7 +1,7 @@
 ---
 - name: Image du robot pour le launcher
   ansible.builtin.copy:
-    src: "home/pi/{{ arig_robot_name | lower }}.png"
+    src: "home/pi/{{ arig_robot_image_name | lower }}.png"
     dest: /home/pi/robot.png
     owner: pi
     group: pi
