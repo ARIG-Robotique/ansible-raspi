@@ -22,3 +22,5 @@ arig_common_raspberry_pi_boot_config:
   - dtoverlay=disable-bt
   - dtoverlay=mcp251xfd,spi0-0,oscillator=40000000,interrupt=25
   # - gpu_mem=128
+
+arig_robot_image_name: pamis
