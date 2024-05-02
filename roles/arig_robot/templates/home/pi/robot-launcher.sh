@@ -1,32 +1,63 @@
 #!/bin/bash
 # {{ ansible_managed }}
 
+{% if arig_robot_with_screen %}
 if [ ! -f robot-launcher ] ; then
   echo "Pas de programme robot-launcher"
   exit 0
 fi
+{% endif %}
 
 ACTION="init"
 EXTERNAL_DIR="/tmp/external-dir"
 ROBOT_NAME=$(cat robot-name)
-OTHER_ROBOTS_NAME="nerell odin pami-triangle pami-carre pami-rond"
 
 function send_action_to_other_robots() {
+{% if arig_robot_primary %}
     ACTION=${1}
+    OTHER_ROBOTS_NAME="nerell pami-triangle"
     for OTHER_ROBOT_NAME in ${OTHER_ROBOTS_NAME} ; do
         if [ "${OTHER_ROBOT_NAME}" != "${ROBOT_NAME}" ] ; then
             ssh ${OTHER_ROBOT_NAME} touch ${EXTERNAL_DIR}/${ACTION}
         fi
     done
+{% endif %}
 }
+
+{% if arig_robot_with_can %}
+echo "Start CAN network"
+sudo ip link set can0 up type can bitrate 2000000
+{% endif %}
 
 while [ "${ACTION}" != "exit" ] ; do
     cd
     mkdir -p "${EXTERNAL_DIR}"
+{% if arig_robot_with_screen %}
     ./robot-launcher
     cd ${ROBOT_NAME}
 
     ACTION=$(cat /tmp/robot-action)
+{% else %}
+    {% if arig_robot_with_can %}
+    
+    cansend can0 00A#
+    sleep 5
+
+    {% endif %}
+
+    if [[ -f "${EXTERNAL_DIR}/run" ]] ; then
+        ACTION="run"
+    elif [[ -f "${EXTERNAL_DIR}/monitoring" ]] ; then
+        ACTION="monitoring"
+    elif [[ -f "${EXTERNAL_DIR}/debug" ]] ; then
+        ACTION="debug"
+    elif [[ -f "${EXTERNAL_DIR}/reboot" ]] ; then
+        ACTION="reboot"
+    elif [[ -f "${EXTERNAL_DIR}/poweroff" ]] ; then
+        ACTION="poweroff"
+    fi
+
+{% endif %}
     echo "Action : ${ACTION}"
 
     if [ "${ACTION}" == "run" ] ; then

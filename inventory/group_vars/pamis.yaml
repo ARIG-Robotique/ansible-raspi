@@ -24,3 +24,6 @@ arig_common_raspberry_pi_boot_config:
   # - gpu_mem=128
 
 arig_robot_image_name: pamis
+arig_robot_primary: False
+arig_robot_with_screen: False
+arig_robot_with_can: True

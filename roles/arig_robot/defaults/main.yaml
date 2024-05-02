@@ -1,2 +1,5 @@
 ---
 arig_robot_image_name: "{{ arig_robot_name | lower }}"
+arig_robot_primary: True
+arig_robot_with_screen: True
+arig_robot_with_can: False
