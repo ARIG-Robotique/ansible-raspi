@@ -21,6 +21,8 @@ function send_action_to_other_robots() {
             ssh ${OTHER_ROBOT_NAME} touch ${EXTERNAL_DIR}/${ACTION}
         fi
     done
+{% else %}
+    echo "Action non envoyée aux autres robots car non primaire"
 {% endif %}
 }
 
