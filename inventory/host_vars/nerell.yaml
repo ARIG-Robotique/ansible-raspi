@@ -5,8 +5,6 @@ arig_robot_name: Nerell
 arig_common_enable_qt: true
 arig_common_enable_java: true
 
-arig_common_bootscreen_wallpaper_reversed: True
-
 arig_common_raspberry_pi_config:
   i2c: true
 
