@@ -209,6 +209,11 @@
 
 - name: Configuration pour QT
   block:
+    - name: Clean bad packages
+      ansible.builtin.apt:
+        name: ca-certificates-java
+        state: absent
+
     - name: Build de packages pour QT
       ansible.builtin.apt:
         name: "{{ arig_common_qt_build }}"
