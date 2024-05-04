@@ -36,6 +36,7 @@ sudo ip link set can0 up type can bitrate 2000000
 while [ "${ACTION}" != "exit" ] ; do
     cd
     mkdir -p "${EXTERNAL_DIR}"
+    ACTION="none"
 {% if arig_robot_with_screen %}
     ./robot-launcher
 
