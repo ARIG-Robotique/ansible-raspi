@@ -12,6 +12,8 @@ ACTION="init"
 EXTERNAL_DIR="/tmp/external-dir"
 ROBOT_NAME=$(cat robot-name)
 
+rm -Rf "${EXTERNAL_DIR}"
+
 function send_action_to_other_robots() {
 {% if arig_robot_primary %}
     ACTION=${1}
@@ -36,7 +38,6 @@ while [ "${ACTION}" != "exit" ] ; do
     mkdir -p "${EXTERNAL_DIR}"
 {% if arig_robot_with_screen %}
     ./robot-launcher
-    cd ${ROBOT_NAME}
 
     ACTION=$(cat /tmp/robot-action)
 {% else %}
@@ -46,7 +47,7 @@ while [ "${ACTION}" != "exit" ] ; do
     sleep 5
 
     {% endif %}
-
+   
     if [[ -f "${EXTERNAL_DIR}/run" ]] ; then
         ACTION="run"
     elif [[ -f "${EXTERNAL_DIR}/monitoring" ]] ; then
@@ -61,7 +62,8 @@ while [ "${ACTION}" != "exit" ] ; do
 
 {% endif %}
     echo "Action : ${ACTION}"
-
+    cd ${ROBOT_NAME}
+    
     if [ "${ACTION}" == "run" ] ; then
         send_action_to_other_robots "${ACTION}"
         ./run.sh
