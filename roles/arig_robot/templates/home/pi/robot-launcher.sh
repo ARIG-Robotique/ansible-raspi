@@ -17,7 +17,7 @@ rm -Rf "${EXTERNAL_DIR}"
 function send_action_to_other_robots() {
 {% if arig_robot_primary %}
     ACTION=${1}
-    OTHER_ROBOTS_NAME="nerell pami-triangle"
+    OTHER_ROBOTS_NAME="nerell pami-triangle pami-carre pami-rond"
     for OTHER_ROBOT_NAME in ${OTHER_ROBOTS_NAME} ; do
         if [ "${OTHER_ROBOT_NAME}" != "${ROBOT_NAME}" ] ; then
             ssh ${OTHER_ROBOT_NAME} touch ${EXTERNAL_DIR}/${ACTION}
