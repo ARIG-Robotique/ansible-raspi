@@ -50,6 +50,7 @@ while [ "${ACTION}" != "exit" ] ; do
     {% endif %}
 
     {% if ansible_hostname == "pami-triangle" or if ansible_hostname == "pami-carre" %}
+    i2cset -y 1 0x55 0x4C 0x00 0x4B i
     i2cset -y 1 0x55 0x4C 0x01 0x57 i
     {% endif %}
     {% if if ansible_hostname == "pami-carre" %}
