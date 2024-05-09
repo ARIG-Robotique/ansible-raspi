@@ -20,7 +20,10 @@ function send_action_to_other_robots() {
     OTHER_ROBOTS_NAME="nerell pami-triangle pami-carre pami-rond"
     for OTHER_ROBOT_NAME in ${OTHER_ROBOTS_NAME} ; do
         if [ "${OTHER_ROBOT_NAME}" != "${ROBOT_NAME}" ] ; then
+            echo "Envoi de l'action ${ACTION} à ${OTHER_ROBOT_NAME}"
             ssh ${OTHER_ROBOT_NAME} touch ${EXTERNAL_DIR}/${ACTION}
+            echo "Action ${ACTION} envoyée à ${OTHER_ROBOT_NAME}"
+            echo " --- "
         fi
     done
 {% else %}
