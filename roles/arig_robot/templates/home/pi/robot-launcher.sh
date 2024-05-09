@@ -21,7 +21,6 @@ function send_action_to_other_robots() {
     for OTHER_ROBOT_NAME in ${OTHER_ROBOTS_NAME} ; do
         if [ "${OTHER_ROBOT_NAME}" != "${ROBOT_NAME}" ] ; then
             ssh ${OTHER_ROBOT_NAME} touch ${EXTERNAL_DIR}/${ACTION}
-            sleep 2
         fi
     done
 {% else %}
