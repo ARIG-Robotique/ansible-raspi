@@ -48,6 +48,16 @@ while [ "${ACTION}" != "exit" ] ; do
     sleep 5
 
     {% endif %}
+
+    {% if ansible_hostname == "pami-triangle" or if ansible_hostname == "pami-carre" %}
+    i2cset -y 1 0x55 0x4C 0x01 0x57 i
+    {% endif %}
+    {% if if ansible_hostname == "pami-carre" %}
+    i2cset -y 1 0x55 0x4C 0x02 0x57 i
+    {% endif %}
+    {% if ansible_hostname == "pami-rond" %}
+    i2cset -y 1 0x55 0x4C 0x00 0x57 i
+    {% endif %}
    
     if [[ -f "${EXTERNAL_DIR}/run" ]] ; then
         ACTION="run"
