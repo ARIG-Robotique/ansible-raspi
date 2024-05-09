@@ -91,7 +91,7 @@ while [ "${ACTION}" != "exit" ] ; do
     elif [ "${ACTION}" == "reboot" ] ; then
         send_action_to_other_robots "${ACTION}"
 {% if ansible_hostname == "pami-triangle" or ansible_hostname == "pami-carre" or ansible_hostname == "pami-rond" %}
-        i2cset -y 1 0x55 0x4C 0x00 0x4B i
+        i2cset -y 1 0x55 0x4C 0x00 0x52 i
 {% endif %}
         sudo reboot
     elif [ "${ACTION}" == "poweroff" ] ; then
