@@ -21,7 +21,7 @@ function send_action_to_other_robots() {
     for OTHER_ROBOT_NAME in ${OTHER_ROBOTS_NAME} ; do
         if [ "${OTHER_ROBOT_NAME}" != "${ROBOT_NAME}" ] ; then
             echo "Envoi de l'action ${ACTION} à ${OTHER_ROBOT_NAME}"
-            ssh ${OTHER_ROBOT_NAME} touch ${EXTERNAL_DIR}/${ACTION}
+            ssh ${OTHER_ROBOT_NAME}.local touch ${EXTERNAL_DIR}/${ACTION}
             echo "Action ${ACTION} envoyée à ${OTHER_ROBOT_NAME}"
             echo " --- "
         fi
@@ -73,6 +73,8 @@ while [ "${ACTION}" != "exit" ] ; do
         ACTION="reboot"
     elif [[ -f "${EXTERNAL_DIR}/poweroff" ]] ; then
         ACTION="poweroff"
+    elif [[ -f "${EXTERNAL_DIR}/exit" ]] ; then
+        ACTION="exit"
     fi
 
 {% endif %}
