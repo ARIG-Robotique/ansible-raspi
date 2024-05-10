@@ -102,6 +102,10 @@ while [ "${ACTION}" != "exit" ] ; do
         i2cset -y 1 0x55 0x4C 0x00 0x4B i
 {% endif %}
         sudo poweroff
+    elif [ "${ACTION}" == "exit" ] ; then
+{% if ansible_hostname == "pami-triangle" or ansible_hostname == "pami-carre" or ansible_hostname == "pami-rond" %}
+        i2cset -y 1 0x55 0x4C 0x00 0x42 i
+{% endif %}
     fi
 
     rm -Rf "${EXTERNAL_DIR}"
