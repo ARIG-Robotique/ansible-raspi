@@ -5,12 +5,18 @@ all:
     localhost:
       ansible_host: 127.0.0.1
       connection: local
-    nerell: []
-    odin: []
-    tinker: []
-    pami-triangle: []
-    pami-carre: []
-    pami-rond: []
+    nerell:
+      ansible_host: nerell.local
+    odin:
+      ansible_host: odin.local
+    tinker:
+      ansible_host: tinker.local
+    pami-triangle:
+      ansible_host: pami-triangle.local
+    pami-carre:
+      ansible_host: pami-carre.local
+    pami-rond:
+      ansible_host: pami-rond.local
 
   children:
     robots:
