@@ -46,7 +46,7 @@ while [ "${ACTION}" != "exit" ] ; do
     ACTION=$(cat /tmp/robot-action)
 {% else %}
     {% if arig_robot_with_can %}
-    
+
     cansend can0 00A#
     sleep 5
 
@@ -62,7 +62,7 @@ while [ "${ACTION}" != "exit" ] ; do
     {% if ansible_hostname == "pami-rond" %}
     i2cset -y 1 0x55 0x4C 0x00 0x57 i
     {% endif %}
-   
+
     if [[ -f "${EXTERNAL_DIR}/run" ]] ; then
         ACTION="run"
     elif [[ -f "${EXTERNAL_DIR}/monitoring" ]] ; then
@@ -80,7 +80,7 @@ while [ "${ACTION}" != "exit" ] ; do
 {% endif %}
     echo "Action : ${ACTION}"
     cd ${ROBOT_NAME}
-    
+
     if [ "${ACTION}" == "run" ] ; then
         send_action_to_other_robots "${ACTION}"
         ./run.sh

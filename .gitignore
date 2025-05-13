@@ -70,3 +70,4 @@ credentials/
 .vault_password
 .tmp/
 .mnt/
+.ansible/.lock

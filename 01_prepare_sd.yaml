@@ -82,7 +82,7 @@
       when: restore_img | bool
       become: true
 
-    - name: Montage de la partition SD Card
+    - name: Montage de la partition SD Card # noqa: syntax-check[unknown-module]
       mount:
         boot: false
         src: "{{ sd_card_device }}{{ item.partition }}"

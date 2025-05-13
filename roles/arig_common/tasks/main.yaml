@@ -14,6 +14,7 @@
   register: arig_common_repository_task
 
 - name: Update si les repositories on changés
+  when: arig_common_repository_task.changed
   block:
     - name: Update cache
       ansible.builtin.apt:
@@ -31,7 +32,6 @@
         pre_reboot_delay: 0
         post_reboot_delay: 30
         test_command: whoami
-  when: arig_common_repository_task.changed
 
 - name: Installation des packages communs
   ansible.builtin.apt:
@@ -88,43 +88,52 @@
 - name: Enable Screen Blanking
   ansible.builtin.command: raspi-config nonint do_blanking 0
   when: arig_common_raspberry_pi_config_merged.screen_blanking and arig_common_raspberrypi_screen_blanking.stdout != '0'
+  changed_when: arig_common_raspberry_pi_config_merged.screen_blanking and arig_common_raspberrypi_screen_blanking.stdout != '0'
 
 - name: Disable Screen Blanking
   ansible.builtin.command: raspi-config nonint do_blanking 1
   when: not arig_common_raspberry_pi_config_merged.screen_blanking and arig_common_raspberrypi_screen_blanking.stdout != '1'
+  changed_when: not arig_common_raspberry_pi_config_merged.screen_blanking and arig_common_raspberrypi_screen_blanking.stdout != '1'
 
 - name: Enable Camera
   ansible.builtin.command: raspi-config nonint do_camera 0
   when: arig_common_raspberry_pi_config_merged.camera and arig_common_raspberrypi_camera.stdout != '0'
+  changed_when: arig_common_raspberry_pi_config_merged.camera and arig_common_raspberrypi_camera.stdout != '0'
 
 - name: Disable Camera
   ansible.builtin.command: raspi-config nonint do_camera 1
   when: not arig_common_raspberry_pi_config_merged.camera and arig_common_raspberrypi_camera.stdout != '1'
+  changed_when: not arig_common_raspberry_pi_config_merged.camera and arig_common_raspberrypi_camera.stdout != '1'
 
 - name: Enable I2C
   ansible.builtin.command: raspi-config nonint do_i2c 0
   when: arig_common_raspberry_pi_config_merged.i2c and arig_common_raspberrypi_i2c.stdout != '0'
+  changed_when: arig_common_raspberry_pi_config_merged.i2c and arig_common_raspberrypi_i2c.stdout != '0'
 
 - name: Disable I2C
   ansible.builtin.command: raspi-config nonint do_i2c 1
   when: not arig_common_raspberry_pi_config_merged.i2c and arig_common_raspberrypi_i2c.stdout != '1'
+  changed_when: not arig_common_raspberry_pi_config_merged.i2c and arig_common_raspberrypi_i2c.stdout != '1'
 
 - name: Enable SPI
   ansible.builtin.command: raspi-config nonint do_spi 0
   when: arig_common_raspberry_pi_config_merged.spi and arig_common_raspberrypi_spi.stdout != '0'
+  changed_when: arig_common_raspberry_pi_config_merged.spi and arig_common_raspberrypi_spi.stdout != '0'
 
 - name: Disable SPI
   ansible.builtin.command: raspi-config nonint do_spi 1
   when: not arig_common_raspberry_pi_config_merged.spi and arig_common_raspberrypi_spi.stdout != '1'
-
+  changed_when: not arig_common_raspberry_pi_config_merged.spi and arig_common_raspberrypi_spi.stdout != '1'
 
 - name: Enable VNC
   ansible.builtin.command: raspi-config nonint do_vnc 0
   when: arig_common_raspberry_pi_config_merged.vnc and arig_common_raspberrypi_vnc.stdout != '0'
+  changed_when: arig_common_raspberry_pi_config_merged.vnc and arig_common_raspberrypi_vnc.stdout != '0'
 
 - name: Disable VNC
   ansible.builtin.command: raspi-config nonint do_vnc 1
   when: not arig_common_raspberry_pi_config_merged.vnc and arig_common_raspberrypi_vnc.stdout != '1'
+  changed_when: not arig_common_raspberry_pi_config_merged.vnc and arig_common_raspberrypi_vnc.stdout != '1'
 
 - name: Install I2C Tools
   ansible.builtin.apt:
@@ -208,6 +217,7 @@
         or arig_common_raspberry_pi_cmdline_state.changed
 
 - name: Configuration pour QT
+  when: arig_common_enable_qt
   block:
     - name: Clean bad packages
       ansible.builtin.apt:
@@ -242,9 +252,8 @@
         state: present
         append: true
 
-  when: arig_common_enable_qt
-
 - name: Installation Java
+  when: arig_common_enable_java
   block:
     - name: Download archive Java
       ansible.builtin.get_url:
@@ -285,4 +294,5 @@
       args:
         creates: /usr/local/lib/libwiringPi.so
 
-  when: arig_common_enable_java
+- name: Configuration udev rules
+  when: arig_common_udev_rules is defined and arig_common_udev_rules | length > 0
