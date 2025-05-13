@@ -2,55 +2,55 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.2.0
+    rev: v5.0.0
     hooks:
       - id: check-case-conflict
-        stages: ['commit']
+        stages: ['pre-commit']
       - id: check-executables-have-shebangs
-        stages: ['commit']
+        stages: ['pre-commit']
       - id: check-json
-        stages: ['commit']
+        stages: ['pre-commit']
       - id: check-merge-conflict
-        stages: ['commit']
+        stages: ['pre-commit']
       - id: check-symlinks
-        stages: ['commit']
+        stages: ['pre-commit']
       - id: check-toml
-        stages: ['commit']
+        stages: ['pre-commit']
       - id: check-xml
-        stages: ['commit']
+        stages: ['pre-commit']
       - id: check-yaml
         args:
           - "--allow-multiple-documents"
-        stages: ['commit']
+        stages: ['pre-commit']
       - id: destroyed-symlinks
-        stages: ['commit']
+        stages: ['pre-commit']
       - id: detect-private-key
-        stages: ['commit']
+        stages: ['pre-commit']
       - id: end-of-file-fixer
-        stages: ['commit']
+        stages: ['pre-commit']
         exclude: "^(.*/)?cmdline.txt$"
       - id: fix-byte-order-marker
-        stages: ['commit']
+        stages: ['pre-commit']
       - id: mixed-line-ending
-        stages: ['commit']
+        stages: ['pre-commit']
       - id: trailing-whitespace
-        stages: ['commit']
+        stages: ['pre-commit']
 
   - repo: https://github.com/ansible-community/ansible-lint.git
-    rev: v6.0.2
+    rev: v25.4.0
     hooks:
       - id: ansible-lint
         exclude: .pre-commit-config.yaml
-        stages: ['commit']
+        stages: ['pre-commit']
 
   - repo: https://git.iamthefij.com/iamthefij/ansible-pre-commit.git
-    rev: v0.1.2
+    rev: v1.0.1
     hooks:
       - id: encryption-check
-        stages: ['commit']
+        stages: ['pre-commit']
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks-nodejs.git
     rev: v1.1.2
     hooks:
       - id: markdown-toc
-        stages: ['commit']
+        stages: ['pre-commit']
