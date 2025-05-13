@@ -22,3 +22,8 @@ arig_common_raspberry_pi_boot_config:
   - dtparam=i2c_arm_baudrate=110000
   - dtoverlay=disable-bt
   # - gpu_mem=128
+
+arig_common_udev_rules:
+  - name: 99-rplidar.rules
+    rules:
+      - 'KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="rplidar"'

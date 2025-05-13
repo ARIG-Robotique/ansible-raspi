@@ -296,3 +296,23 @@
 
 - name: Configuration udev rules
   when: arig_common_udev_rules is defined and arig_common_udev_rules | length > 0
+  block:
+    - name: Create udev rules
+      ansible.builtin.template:
+        src: etc/udev/rules.d/rules.j2
+        dest: "/etc/udev/rules.d/{{ item.name }}.rules"
+        owner: root
+        group: root
+        mode: 0644
+      loop: "{{ arig_common_udev_rules }}"
+      register: arig_common_udev_rules_state
+
+    - name: Reload udev rules
+      ansible.builtin.command: udevadm control --reload-rules
+      when: arig_common_udev_rules_state.changed
+      changed_when: arig_common_udev_rules_state.changed
+
+    - name: Trigger udev rules
+      ansible.builtin.command: udevadm trigger
+      when: arig_common_udev_rules_state.changed
+      changed_when: arig_common_udev_rules_state.changed
