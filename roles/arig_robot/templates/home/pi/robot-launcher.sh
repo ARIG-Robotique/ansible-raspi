@@ -17,7 +17,7 @@ rm -Rf "${EXTERNAL_DIR}"
 function send_action_to_other_robots() {
 {% if arig_robot_primary %}
     ACTION=${1}
-    OTHER_ROBOTS_NAME="nerell pami-triangle pami-carre pami-rond"
+    OTHER_ROBOTS_NAME="nerell pami-triangle pami-carre pami-rond pami-star"
     for OTHER_ROBOT_NAME in ${OTHER_ROBOTS_NAME} ; do
         if [ "${OTHER_ROBOT_NAME}" != "${ROBOT_NAME}" ] ; then
             echo "Envoi de l'action ${ACTION} à ${OTHER_ROBOT_NAME}"
@@ -52,14 +52,35 @@ while [ "${ACTION}" != "exit" ] ; do
 
     {% endif %}
 
-    {% if ansible_hostname == "pami-triangle" or ansible_hostname == "pami-carre" %}
+    {% if ansible_hostname == "pami-triangle" or ansible_hostname == "pami-carre" or ansible_hostname == "pami-rond" or ansible_hostname == "pami-star" %}
+    # 'W': 0x57 White
+    # 'R': 0x52 Red
+    # 'G': 0x47 Green
+    # 'B': 0x42 Blue
+    # 'Y': 0x59 Yellow
+    # 'K': 0x4B Black
+    # 2025 -> 7 LEDs en série
+    {% endif %}
+
+    {% if ansible_hostname == "pami-triangle" or ansible_hostname == "pami-carre" or ansible_hostname == "pami-rond" %}
+    # All in Black   : _ _ _ _ _ _ _
     i2cset -y 1 0x55 0x4C 0x00 0x4B i
+    # 1 & 7 in White : W _ _ _ _ _ W
     i2cset -y 1 0x55 0x4C 0x01 0x57 i
+    i2cset -y 1 0x55 0x4C 0x07 0x57 i
     {% endif %}
     {% if ansible_hostname == "pami-carre" %}
+    # 2 & 6 in White : W W _ _ _ W W
     i2cset -y 1 0x55 0x4C 0x02 0x57 i
+    i2cset -y 1 0x55 0x4C 0x06 0x57 i
     {% endif %}
     {% if ansible_hostname == "pami-rond" %}
+    # 3 & 5 in White : W W W _ W W W
+    i2cset -y 1 0x55 0x4C 0x03 0x57 i
+    i2cset -y 1 0x55 0x4C 0x05 0x57 i
+    {% endif %}
+    {% if ansible_hostname == "pami-star" %}
+    # All in White   : W W W W W W W
     i2cset -y 1 0x55 0x4C 0x00 0x57 i
     {% endif %}
 
