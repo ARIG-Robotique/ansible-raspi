@@ -27,3 +27,8 @@ arig_robot_image_name: pamis
 arig_robot_primary: false
 arig_robot_with_screen: false
 arig_robot_with_can: true
+
+arig_common_udev_rules:
+  - name: 99-ldlidar.rules
+    rules:
+      - 'KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="ldlidar"'
